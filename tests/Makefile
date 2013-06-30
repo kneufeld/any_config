@@ -7,7 +7,7 @@ test: all
 
 ## Target name. Use base name if making a library.
 ## Destination is where the target should end up when 'make install'
-TARGET=any_tests
+TARGET=any_config_tests
 DESTINATION=.
 	
 OBJECTS = any_config_tests.o
