@@ -3,8 +3,8 @@ any_config
 
 A template class that follows the prototype pattern.
 
-http://steve-yegge.blogspot.com/2008/10/universal-design-pattern.html
-http://wiki.aqsis.org/dev/template_tricks
+* http://steve-yegge.blogspot.com/2008/10/universal-design-pattern.html
+* http://wiki.aqsis.org/dev/template_tricks
 
 The original use case was to configure a plot (think gnuplot or excel chart). The software
 itself required some properties to be set in every plot so there was a global
@@ -43,26 +43,26 @@ Note: you probably want to put all your types in a namespace or in a parent clas
 
 Taken from tests/any_config_tests.cpp, any_config_tests::Example():
 
-namespace car_example
-{
-	ANY_CONFIG_KEY( Year, int, 1 );
-	ANY_CONFIG_KEY( Make, std::string, 2 );
-	ANY_CONFIG_KEY( Model, std::string, 3 );
-}
+	namespace car_example
+	{
+		ANY_CONFIG_KEY( Year, int, 1 );
+		ANY_CONFIG_KEY( Make, std::string, 2 );
+		ANY_CONFIG_KEY( Model, std::string, 3 );
+	}
 
-void any_config_tests::Example()
-{
-	using namespace std;
-	using namespace car_example;
+	void any_config_tests::Example()
+	{
+		using namespace std;
+		using namespace car_example;
 
-	any_config car;
-	car.set<Make>( "VW" );
+		any_config car;
+		car.set<Make>( "VW" );
 
-	any_config jetta( &car );
-	jetta.set<Model>( "Jetta GLI" );
-	jetta.set<Year>( 2013 );
+		any_config jetta( &car );
+		jetta.set<Model>( "Jetta GLI" );
+		jetta.set<Year>( 2013 );
 
-	// note: we didn't set Make on jetta but the correct value is returned
-	cout << endl << "make: " << jetta.get<Make>() << ", model: " << jetta.get<Model>() << ", year: " << jetta.get<Year>() << endl;
-}
+		// note: we didn't set Make on jetta but the correct value is returned
+		cout << endl << "make: " << jetta.get<Make>() << ", model: " << jetta.get<Model>() << ", year: " << jetta.get<Year>() << endl;
+	}
 
