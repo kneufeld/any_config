@@ -2,6 +2,7 @@
 *.slo
 *.lo
 *.o
+*/.obj/*
 
 # Compiled Dynamic libraries
 *.so
@@ -11,3 +12,5 @@
 *.lai
 *.la
 *.a
+
+tests/any_config_tests
