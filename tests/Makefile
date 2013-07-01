@@ -100,6 +100,7 @@ lib$(TARGET).a: $(REAL_OBJS)
 ## Dependency rules
 ## modify the dependancy files to reflect the fact their in an odd directory
 $(OBJ_DIR)/%.d : $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
 	@echo "generating dependency information for $<"
 	@$(GEN_DEPS.c) $< > $@
 	@mv -f $(OBJ_DIR)/$*.d $(OBJ_DIR)/$*.d.tmp
@@ -107,6 +108,7 @@ $(OBJ_DIR)/%.d : $(SRC_DIR)/%.c
 	@rm -f $(OBJ_DIR)/$*.d.tmp
 
 $(OBJ_DIR)/%.d : $(SRC_DIR)/%.cpp
+	@mkdir -p $(OBJ_DIR)
 	@echo "generating dependency information for $<"
 	@$(GEN_DEPS.cc) $< > $@
 	@mv -f $(OBJ_DIR)/$*.d $(OBJ_DIR)/$*.d.tmp
