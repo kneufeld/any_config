@@ -68,6 +68,7 @@ REAL_OBJS=$(addprefix $(OBJ_DIR)/,$(OBJECTS))
 
 ## convert OBJECTS to dependencies
 DEPS = $(REAL_OBJS:.o=.d)
+
 # pull in dependency info
 -include $(DEPS)
 
@@ -95,15 +96,17 @@ lib$(TARGET).a: $(REAL_OBJS)
 	ranlib $@
 
 ## Dependency rules
-## modify the dependancy files to reflect the fact their in an odd directory
-$(OBJ_DIR)/%.d : $(SRC_DIR)/%.c
+## modify the dependancy files to reflect the fact they're in an odd directory
+$(OBJ_DIR)/%.d: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
 	@echo "generating dependency information for $<"
 	@$(GEN_DEPS.c) $< > $@
 	@mv -f $(OBJ_DIR)/$*.d $(OBJ_DIR)/$*.d.tmp
 	@sed -e 's|.*:|$(OBJ_DIR)/$*.o:|' < $(OBJ_DIR)/$*.d.tmp > $(OBJ_DIR)/$*.d
 	@rm -f $(OBJ_DIR)/$*.d.tmp
 
-$(OBJ_DIR)/%.d : $(SRC_DIR)/%.cpp
+$(OBJ_DIR)/%.d: $(SRC_DIR)/%.cpp
+	@mkdir -p $(OBJ_DIR)
 	@echo "generating dependency information for $<"
 	@$(GEN_DEPS.cc) $< > $@
 	@mv -f $(OBJ_DIR)/$*.d $(OBJ_DIR)/$*.d.tmp
@@ -125,12 +128,14 @@ install: install-recursive pre-all
 clean: clean-recursive
 	$(RMV) $(OBJ_DIR)/$(CLEANFILES) $(OBJ_DIR)/*.o $(OBJ_DIR)/*.d $(TARGET) lib$(TARGET).*
 
-first:
-	@mkdir -p $(OBJ_DIR)
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
-pre-all: all-deps
+first: $(OBJ_DIR)
 
 all-deps: first $(DEPS)
+
+pre-all: all-deps
 
 all-exec: pre-all $(TARGET)
 
@@ -147,4 +152,6 @@ all-recursive install-recursive clean-recursive:
 	for subdir in $$list; do \
 	  echo "Making $$target in $$subdir"; \
 	  (cd $$subdir && $(MAKE) $$target) || exit; \
-	done; \
+	done;
+
+
