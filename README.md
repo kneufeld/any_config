@@ -36,6 +36,33 @@ Despite these limitations, any_config can make some difficult problems trivial t
 
 ps. The makefiles are pretty good examples for other projects
 
+Dependencies
+============
+
+any_config depends on boost and the tests depend on cppunit.
+
+Homebrew
+--------
+
+	brew install cppunit boost
+
+Fedora
+------
+
+	yum install boost-devel cppunit-devel
+
+
+Building
+========
+
+Building has been rudimentarily tested on OSX and Linux (Fedora).
+
+`make` and `make test` should do what you expect. There is no `make install` as you'll probably just
+want to copy the source files into any project that may use them.
+
+Note: you may need to edit the Makefile(s) INC_DIR and LIB_DIR to find your installation of cppunit or other.
+
+
 Example
 =======
 
