@@ -1,6 +1,6 @@
 ## Target type.
 ## all is one of: all-exec  all-libraries  all-shared  all-static
-all: all-static
+all: all-libraries
 
 ## Target name. Use base name if making a library.
 ## Destination is where the target should end up when 'make install'

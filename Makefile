@@ -3,7 +3,7 @@
 all: all-recursive
 
 test: all-recursive
-	tests/any_tests
+	make -C tests test
 
 ## Target name. Use base name if making a library.
 ## Destination is where the target should end up when 'make install'

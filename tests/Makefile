@@ -2,8 +2,11 @@
 ## all is one of: all-exec  all-libraries  all-shared  all-static
 all: all-exec
 
-test: all
-	./$(TARGET)
+libany_config.so:
+	cp ../src/$@ .
+
+test: libany_config.so all
+	LD_LIBRARY_PATH=. ./$(TARGET)
 
 ## Target name. Use base name if making a library.
 ## Destination is where the target should end up when 'make install'
