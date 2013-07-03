@@ -62,7 +62,7 @@ void any_config_tests::Setting()
 	CPPUNIT_ASSERT_DOUBLES_EQUAL( 10.0, m_config.get<CFG_MAX>(), m_delta );
 
 	// we've added CFG_MAX to child, make sure it's not in the parent
-	CPPUNIT_ASSERT_THROW_MESSAGE( "", m_parent.get<CFG_MAX>(), any_config_key_error );
+	CPPUNIT_ASSERT_THROW_MESSAGE( "", m_parent.get<CFG_MAX>(), any_config::any_config_key_error );
 }
 
 void any_config_tests::Getting()
@@ -72,7 +72,7 @@ void any_config_tests::Getting()
 	CPPUNIT_ASSERT( m_config.get<CFG_ID>() == "config" );
 
 	// make sure we throw an exception for a key that does not exist
-	CPPUNIT_ASSERT_THROW_MESSAGE( "", m_parent.get<CFG_MAX>(), any_config_key_error );
+	CPPUNIT_ASSERT_THROW_MESSAGE( "", m_parent.get<CFG_MAX>(), any_config::any_config_key_error );
 
 	CPPUNIT_ASSERT( ! m_config.has_key<CFG_MAX>() );
 	CPPUNIT_ASSERT( m_config.has_key<CFG_ID>() );
@@ -109,7 +109,7 @@ void any_config_tests::Keys()
 	any_config::key_set keys = m_config.keys();
 	CPPUNIT_ASSERT( m_config.m_map.size() == 2 );	// ID & MIN (MAX in parent)
 
-	m_config.erase_all();
+	m_config.clear();
 	CPPUNIT_ASSERT( m_config.m_map.size() == 0 );
 	CPPUNIT_ASSERT( m_parent.m_map.size() == 2 );	// parent should still have its keys
 

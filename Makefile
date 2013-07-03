@@ -27,7 +27,7 @@ LDFLAGS = -L. -L$(SRC_DIR) -L/usr/local/lib
 LIBS =
 
 ## Run make command in these directories
-SUBDIRS = src tests
+SUBDIRS = tests
 
 ## un/comment for debug symbols in executable
 DEBUG = -g
