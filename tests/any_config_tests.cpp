@@ -11,11 +11,6 @@
 
 using namespace std;
 
-// gcc isn't letting me initialize in the struct even though all literature says it should allow it. Linker fail.
-const any_config::key_type CFG_ID::key        = 1;
-const any_config::key_type CFG_MIN::key        = 2;
-const any_config::key_type CFG_MAX::key        = 3;
-
 CPPUNIT_TEST_SUITE_REGISTRATION( any_config_tests );
 
 any_config_tests::any_config_tests()
@@ -62,7 +57,7 @@ void any_config_tests::Setting()
     CPPUNIT_ASSERT_DOUBLES_EQUAL( 10.0, m_config.get<CFG_MAX>(), m_delta );
 
     // we've added CFG_MAX to child, make sure it's not in the parent
-    CPPUNIT_ASSERT_THROW_MESSAGE( "", m_parent.get<CFG_MAX>(), any_config::any_config_key_error );
+    CPPUNIT_ASSERT_THROW_MESSAGE( "", m_parent.get<CFG_MAX>(), any_config::key_error );
 }
 
 void any_config_tests::Getting()
@@ -72,7 +67,7 @@ void any_config_tests::Getting()
     CPPUNIT_ASSERT( m_config.get<CFG_ID>() == "config" );
 
     // make sure we throw an exception for a key that does not exist
-    CPPUNIT_ASSERT_THROW_MESSAGE( "", m_parent.get<CFG_MAX>(), any_config::any_config_key_error );
+    CPPUNIT_ASSERT_THROW_MESSAGE( "", m_parent.get<CFG_MAX>(), any_config::key_error );
 
     CPPUNIT_ASSERT( ! m_config.has_key<CFG_MAX>() );
     CPPUNIT_ASSERT( m_config.has_key<CFG_ID>() );

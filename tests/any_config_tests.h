@@ -4,11 +4,12 @@
 
 #include "cppunit/extensions/HelperMacros.h"
 
+#define private public
 #include "any_config.h"
 
-struct CFG_ID  { typedef std::string type;  static const any_config::key_type key; };
-struct CFG_MIN { typedef double type;       static const any_config::key_type key; };
-struct CFG_MAX { typedef double type;       static const any_config::key_type key; };
+ANY_CONFIG_KEY( CFG_ID, std::string, 1 );
+ANY_CONFIG_KEY( CFG_MAX, double, 2 );
+ANY_CONFIG_KEY( CFG_MIN, double, 3 );
 
 class CTestConfig : public any_config
 {
