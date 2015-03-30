@@ -9,9 +9,7 @@
 #include "boost/any.hpp"
 
 #define ANY_CONFIG_KEY( _key_name, _key_type, _key_value ) \
-struct _key_name { typedef _key_type type; static const any_config::key_type key; }; \
-const any_config::key_type _key_name::key = _key_value;
-
+struct _key_name { typedef _key_type type; enum { key = _key_value }; }
 
 /************************************************************************
     Class that holds configuration information
@@ -26,13 +24,12 @@ const any_config::key_type _key_name::key = _key_value;
     We then cast boost::any to the 'real' type on get<type>(key).
 
     Example to prototype a car:
-    struct Year { typedef int type; static const any_config::key_type key; };
-    const any_config::key_type Year::key = 1;
+    struct Year { typedef int type; enum { key = 1 }; };
     // or use helper macro to accomplish the same thing
     ANY_CONFIG_KEY( Make, std::string, 2 );
 
     any_config car;
-    car.set<Year>( 23 );
+    car.set<Year>( 2013 );
     car.set<Make>( "VW" );
     string make = car.get<Make>( "VW" );
 
