@@ -37,22 +37,16 @@ struct _key_name { typedef _key_type type; enum { key = _key_value }; }
 ************************************************************************/
 class any_config
 {
-    friend class any_config_tests;
-
 public:
-
-    typedef int                             key_type;
-    typedef boost::any                      val_type;
-
-    typedef std::map< key_type, val_type>   config_map;
-    typedef std::vector< key_type >         key_array;
-    typedef std::set< key_type >            key_set;
 
     typedef std::shared_ptr< any_config >   pointer;
 
-    // exception types
-    typedef std::logic_error                any_config_error;
-    typedef std::runtime_error              any_config_key_error;
+    typedef int                             key_type;
+    typedef boost::any                      val_type;
+    typedef std::map< key_type, val_type>   config_map;
+    typedef std::set< key_type >            key_set;
+
+    typedef std::runtime_error              key_error;
 
     any_config( any_config* parent = NULL ) : m_parent( parent ) {}
     ~any_config() {}
