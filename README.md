@@ -1,6 +1,8 @@
 any_config
 =========
 
+This project is licensed under the terms of the MIT license.
+
 A template class that follows the prototype pattern.
 
 * http://steve-yegge.blogspot.com/2008/10/universal-design-pattern.html
