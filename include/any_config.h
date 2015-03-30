@@ -115,7 +115,7 @@ const typename T::type& any_config::get() const
 
     // that key does not exist in config chain, check key with has_key() first
     // returning the key isn't too helpful, which struct is key 34?
-    throw any_config_key_error( "that key does not exist in any_config chain" );
+    throw key_error( "that key does not exist in any_config chain" );
 }
 
 /************************************************************************
