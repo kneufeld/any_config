@@ -7,7 +7,6 @@
 #include <stdexcept>
 
 #include "boost/any.hpp"
-using boost::any_cast;
 
 #define ANY_CONFIG_KEY( _key_name, _key_type, _key_value ) \
 struct _key_name { typedef _key_type type; static const any_config::key_type key; }; \
@@ -118,7 +117,7 @@ const typename T::type& any_config::get() const
 
     if( it != m_map.end() )
     {
-        return any_cast<const typename T::type&>( ( *it ).second );
+        return boost::any_cast<const typename T::type&>( ( *it ).second );
     }
 
     if( m_parent )
