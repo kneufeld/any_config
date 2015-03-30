@@ -18,12 +18,12 @@ OBJECTS = any_config_tests.o
 ## INC_DIR include these other directories when looking for header files
 OBJ_DIR=.obj
 SRC_DIR=.
-INC_DIR=-I../include -I/usr/local/Cellar/cppunit/1.12.1/include
+INC_DIR=-I../include -I/usr/local/opt/cppunit/include
 
 ## DEFINES pass in these extra #defines to gcc (no -D required)
 DEFINES=
 
-LDFLAGS = -L. -L$(SRC_DIR) -L/usr/local/Cellar/cppunit/1.12.1/lib
+LDFLAGS = -L. -L$(SRC_DIR) -L/usr/local/opt/cppunit/include
 LIBS = -lcppunit
 
 ## Run make command in these directories
@@ -41,7 +41,7 @@ CXXFLAGS = $(DEBUG) -O$(OPTIMIZE) -std=c++0x
 
 ## Compiler/tools information
 CC = gcc
-CXX = /usr/local/Cellar/gcc48/4.8.1/bin/g++-4.8
+CXX = g++
 THREADING =
 
 ### YOU PROBABLY DON'T NEED TO CHANGE ANYTHING BELOW HERE ###
