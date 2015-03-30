@@ -141,18 +141,14 @@ the key recursively through any parents. That could be very
 dangerous if the parent has many children and those children
 are depending on that key being there.
 
-Return true/false if something was deleted. Either way, that key
-won't be there.
+return true if we erase something, key is gone in either case
 ************************************************************************/
 template<typename T>
 bool any_config::erase()
 {
-    if( ! has_key<T>( false ) )
-        return false;
-
+    size_t orig_size = m_map.size();
     m_map.erase( T::key );
-
-    return true;
+    return orig_size != m_map.size();
 }
 
 // copy ctor
