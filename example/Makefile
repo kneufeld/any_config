@@ -1,16 +1,16 @@
 ## Target type.
-## all is one of: all-exec  all-libraries  all-shared  all-static, plus optionally all-recursive
-all: all-recursive
+## all is one of: all-exec  all-libraries  all-shared  all-static
+all: all-exec
 
-test: all-recursive
-	make -C tests test
+test: all
+	LD_LIBRARY_PATH=. ./$(TARGET)
 
 ## Target name. Use base name if making a library.
 ## Destination is where the target should end up when 'make install'
-TARGET=
+TARGET=example
 DESTINATION=.
 	
-OBJECTS =
+OBJECTS=$(patsubst %.cpp,%.o,$(wildcard *.cpp))
 
 ## None of these can be blank (fill with '.' if nothing)
 ## OBJ_DIR where to put object files when compiling
@@ -18,26 +18,26 @@ OBJECTS =
 ## INC_DIR include these other directories when looking for header files
 OBJ_DIR=.obj
 SRC_DIR=.
-INC_DIR=../include
+INC_DIR=-I../include -I/usr/local/opt/cppunit/include
 
 ## DEFINES pass in these extra #defines to gcc (no -D required)
 DEFINES=
 
-LDFLAGS = -L. -L$(SRC_DIR) -L/usr/local/lib
+LDFLAGS = -L. -L$(SRC_DIR) -L/usr/local/opt/cppunit/include
 LIBS =
 
 ## Run make command in these directories
-SUBDIRS = tests example
+SUBDIRS =
 
 ## un/comment for debug symbols in executable
 DEBUG = -g
 ## optimize level 0(none) .. 3(all)
-OPTIMIZE = 0
+OPTIMIZE = 2
 
 DEFS = $(addprefix -D ,$(DEFINES))
-CPPFLAGS = -I. -I$(SRC_DIR) -I$(INC_DIR) -I/usr/local/include
+CPPFLAGS = -I$(SRC_DIR) $(INC_DIR)
 CFLAGS = $(DEBUG) -O$(OPTIMIZE) 
-CXXFLAGS = $(DEBUG) -O$(OPTIMIZE) -Wno-write-strings
+CXXFLAGS = $(DEBUG) -O$(OPTIMIZE) -std=c++0x
 
 ## Compiler/tools information
 CC = gcc
@@ -76,7 +76,7 @@ DEPS = $(REAL_OBJS:.o=.d)
 
 ## Compilation rules
 $(SRC_DIR)/%.c: $(SRC_DIR)/%.h
-$(SRC_DIR)/%.cpp: $(SRC_DIR)/%.h
+$(SRC_DIR)/%.cpp: $(SRC_DIR)/%.hpp
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@#echo "compiling $<"
@@ -100,6 +100,7 @@ lib$(TARGET).a: $(REAL_OBJS)
 ## Dependency rules
 ## modify the dependancy files to reflect the fact their in an odd directory
 $(OBJ_DIR)/%.d : $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
 	@echo "generating dependency information for $<"
 	@$(GEN_DEPS.c) $< > $@
 	@mv -f $(OBJ_DIR)/$*.d $(OBJ_DIR)/$*.d.tmp
@@ -107,6 +108,7 @@ $(OBJ_DIR)/%.d : $(SRC_DIR)/%.c
 	@rm -f $(OBJ_DIR)/$*.d.tmp
 
 $(OBJ_DIR)/%.d : $(SRC_DIR)/%.cpp
+	@mkdir -p $(OBJ_DIR)
 	@echo "generating dependency information for $<"
 	@$(GEN_DEPS.cc) $< > $@
 	@mv -f $(OBJ_DIR)/$*.d $(OBJ_DIR)/$*.d.tmp
@@ -133,9 +135,9 @@ first:
 
 pre-all: all-deps
 
-all-deps: first all-recursive $(DEPS)
+all-deps: first $(DEPS)
 
-all-exec: pre-all $(TARGET) 
+all-exec: pre-all $(TARGET)
 
 all-libraries: pre-all lib$(TARGET).so lib$(TARGET).a
 
@@ -144,10 +146,10 @@ all-shared: pre-all lib$(TARGET).so
 all-static: pre-all lib$(TARGET).a
 
 ## Recursive targets
-all-recursive install-recursive clean-recursive: $(SUBDIRS)
+all-recursive install-recursive clean-recursive:
 	@target=`echo $@ | sed s/-recursive//`; \
 	list='$(SUBDIRS)'; \
 	for subdir in $$list; do \
-	  echo "Making '$$target' in $$subdir"; \
+	  echo "Making $$target in $$subdir"; \
 	  (cd $$subdir && $(MAKE) $$target) || exit; \
 	done; \
