@@ -71,10 +71,9 @@ public:
     template<typename T>    bool                has_key( bool recurse = true ) const;
     template<typename T>    bool                erase(); // not a recursive call
 
-protected:
-
-
 private:
+
+    void _keys( key_set& keys ) const;
 
     any_config* m_parent;
     config_map  m_map;
@@ -194,23 +193,20 @@ bool any_config::operator==( const any_config& rhs )
 inline
 any_config::key_set any_config::keys() const
 {
-    key_set keys;
+    key_set ret;
+    _keys( ret );
+    return ret;
+}
 
-    for( config_map::const_iterator it = m_map.begin(); it != m_map.end(); it++ )
+inline
+void any_config::_keys( key_set& keys ) const
+{
+    for( config_map::const_iterator it = m_map.begin(); it != m_map.end(); ++it )
     {
-        keys.insert( ( *it ).first );
+        keys.insert( it->first );
     }
 
     if( m_parent )
-    {
-        key_set parent_keys = m_parent->keys();
-
-        for( key_set::const_iterator it = parent_keys.begin(); it != parent_keys.end(); it++ )
-        {
-            keys.insert( *it );
-        }
-    }
-
-    return keys;
+        return m_parent->_keys( keys );
 }
 
