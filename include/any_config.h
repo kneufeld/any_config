@@ -1,13 +1,10 @@
 #pragma once
 
 #include <map>
-#include <vector>
 #include <set>
 #include <memory>
+#include <algorithm>
 #include <stdexcept>
-
-#include <string>
-using std::string;
 
 #include "boost/any.hpp"
 using boost::any_cast;
